@@ -22,7 +22,7 @@ isTagName string = head string == '<' && ('/' /= (head $ tail string))
 isCloseAttrTag :: String -> Bool
 isCloseAttrTag string = last string == '>' && ((last $ init string) == '/')
 
-isCloseTag :: String -> String -> Bool
+isCloseTag :: String -> Bool
 isCloseTag string tagName = string == ("</" ++ tagName ++ ">")
 
 isAttr :: String -> Bool
@@ -56,13 +56,16 @@ addChild :: XMLTree -> XMLTree -> XMLTree
 addChild parent child = XMLTree (tag parent) (attr parent) (childs parent ++ [child])  
 
 
-crearXMLTree :: XMLTree -> [String] -> XMLTree
-crearXMLTree tree [] = tree
+crearXMLTree :: XMLTree -> [String] -> (XMLTree,[String])
+crearXMLTree tree [] = (tree,[])
 crearXMLTree tree (x:xs) 
-  | isCloseTagName x = (addAttr tree x) 
+  | isCloseAttrTag x = ((addAttr tree x),xs) 
   | isAttr x = crearXMLTree (addAttr tree x) xs
-  | isTagName x = let newTree = XMLTree (tag tree) (attr tree) (childs tree ++ [crearXMLTree (newXMLTree x) xs ])
-                  in crearXMLTree newTree xs
-  
-  
+  | isCloseTagName x = (tree,xs) 
+  | isTagName x = case tree of Empty -> crearXMLTree (newXMLTree x) xs
+                               _ -> let newChildTuple = crearXMLTree (newXMLTree) xs
+                                    in let newTree = XMLTree (tag tree) (attr tree) (childs tree ++ [fst newChildTuple])
+                                       in crearXMLTree newTree (snd newChildTuple)
+
+
   
