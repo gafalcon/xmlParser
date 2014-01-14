@@ -1,0 +1,6 @@
+<devices>
+<device id="id" user="yo">
+  <group id="id2">
+    <capability name="cap" value="23"/>
+  </group>
+</device>
