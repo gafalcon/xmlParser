@@ -97,6 +97,7 @@ crearXMLTree lista = let aux [] listaTree = listaTree
                                                   in aux (snd newTree) (listaTree ++ [fst newTree])
                      in aux lista []
 
+
 startLista :: [String] -> [String]
 startLista [] = []
 startLista (x:xs)
@@ -124,6 +125,68 @@ buscarAttrInTreeList tree tuple = let aux  [] _ n = n
                                                     (buscarAttrInTreeList (childs x) tup) + n)
                                   in aux tree tuple 0
 
+--- Dado un string q representa al archivo xml, devuelve el xml ordenado en forma de una lista de XMLTrees
 iniciarTree :: String -> [XMLTree]
 iniciarTree str = crearXMLTree $ words str
 
+-- Determina si el string es un atributo de la forma fall_back="nokia_generic_series80"
+fallback :: String -> Bool
+fallback str = let regex = "fall_back=\"nokia_generic_series80\""
+               in str =~ regex
+
+-- Determina si el String es un atributo de la forma name="built_in_camera"
+builtCamera :: String -> Bool
+builtCamera str= let regex = "name=\"built_in_camera\""
+                  in str =~ regex
+
+-- Determina si el String es un atributo de la forma value="true"
+valueCamera :: String -> Bool
+valueCamera str = let regex = "value=\"true\""
+                  in str =~ regex
+
+--- Determina si el String es un atributo tipo id
+valueId :: String -> Bool
+valueId str = let regex = "id=\".*\""
+              in str =~ regex
+
+-- Dado un String, determina si es un tag de inicio de un device                 
+isDeviceTag :: String -> Bool
+isDeviceTag str = let regex = "<device"
+               in str=~ regex
+                  
+--- Dado una reg expression y un String, devuelve Bool indicando si la reg. Expression coincide con el String
+device :: String -> String -> Bool
+device re str = str =~ re
+
+--- Devuelve 
+buscarNumFallback :: [String] -> String -> [String] -> [String]
+buscarNumFallback [] id lista = lista
+buscarNumFallback (x:xs) id lista
+  | isDeviceTag x = buscarNumFallback xs (getAttrValue (head xs)) lista
+  | (fallback x) == True = buscarNumFallback xs "" (lista++[id])
+  | otherwise = buscarNumFallback xs id lista
+
+--- Devuelve lista de ids de Devices q posean built_in_camera
+buscarBuiltCamera :: [String] -> String -> [String] -> [String]
+buscarBuiltCamera [] id lista = lista
+buscarBuiltCamera (x1:x2:[]) id lista = lista
+buscarBuiltCamera (x1:x2:xs) id lista
+  | isDeviceTag x1 = buscarBuiltCamera xs (getAttrValue x2) lista
+  | (builtCamera x1) && (valueCamera x2) = buscarBuiltCamera xs "" (lista++[id])
+  | otherwise = buscarBuiltCamera (x2:xs) id lista
+    
+
+-- Dada una listaXML retorna el num de Devices que contiene
+buscarNumDevices :: [String] -> Integer
+buscarNumDevices lista = let aux (x:xs) n
+                               | isDeviceTag x = aux xs (n+1)
+                               | otherwise = aux xs n
+                         in aux lista 0
+
+-- Devuelve lista de ids de Devices que contengan el substring str contenidos en una lista
+buscarInId :: [String] -> [String] -> String
+buscarInId [] lista _ = lista
+buscarInId (x1:x2:[]) lista str = lista
+buscarInId (x1:x2:xs) lista str
+  | (isDeviceTag x1) && (device str x2) = buscarInId xs (lista++[(getAttrValue x2)]) str
+  | otherwise = buscarInId (x2:xs) lista str
