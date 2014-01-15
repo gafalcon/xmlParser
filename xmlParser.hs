@@ -14,8 +14,8 @@ data XMLTree = Empty |  XMLTree { tag :: String
 readXML :: String -> IO String
 readXML file = do
   handle <- openFile file ReadMode
-  hGetContents handle
-
+  hGetContents handle	
+	
 -- Agrega un atributo al arbol
 addAttr :: XMLTree -> String -> XMLTree
 addAttr tree element = XMLTree (tag tree) ((attr tree) ++ [crearAttr element]) (childs tree)
@@ -88,6 +88,7 @@ crearXMLTreeAux tree (x:xs)
                                _ -> let newChildTuple = crearXMLTreeAux (newXMLTree (crearTagName x)) xs
                                     in let newTree = XMLTree (tag tree) (attr tree) (childs tree ++ [fst newChildTuple])
                                        in crearXMLTreeAux newTree (snd newChildTuple)
+  | otherwise = crearXMLTreeAux tree (unirAttr (x:xs))
 
 --- Dado una lista de Strings, retorna la estructura de Arbol de Parseo
 crearXMLTree :: [String] -> [XMLTree]
@@ -96,6 +97,33 @@ crearXMLTree lista = let aux [] listaTree = listaTree
                                                   in aux (snd newTree) (listaTree ++ [fst newTree])
                      in aux lista []
 
-                           
+startLista :: [String] -> [String]
+startLista [] = []
+startLista (x:xs)
+  | x == "</version>" = init xs
+  | otherwise = startLista xs
 
+unirAttr :: [String] -> [String]                
+unirAttr (x:xs:xss)
+  | (xs =~ ".*\"") == True = (x++(' ':xs)):xss
+  | (xs =~ ".*\"/>") == True = (x++(' ':xs)):xss
+  | otherwise = unirAttr ( (x++(' ':xs)):xss )
   
+
+buscarAttrInAttrList :: [(String,String)] -> (String,String) -> Integer
+buscarAttrInAttrList listaAttr tuple = let aux [] _ n = n
+                                           aux ((name,val):xs) (name1,val1) n
+                                             | (name == name1) && (val == val1) = aux xs (name1,val1) (n+1)
+                                             | otherwise = aux xs (name1,val1) n
+                                       in aux listaAttr tuple 0
+
+buscarAttrInTreeList :: [XMLTree] -> (String,String) -> Integer
+buscarAttrInTreeList tree tuple = let aux  [] _ n = n
+                                      aux (x:xs) tup n =
+                                        aux xs tup ((buscarAttrInAttrList (attr x) tup) +
+                                                    (buscarAttrInTreeList (childs x) tup) + n)
+                                  in aux tree tuple 0
+
+iniciarTree :: String -> [XMLTree]
+iniciarTree str = crearXMLTree $ words str
+

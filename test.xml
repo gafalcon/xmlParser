@@ -1,7 +1,70 @@
-<devices>
-<device id="id" user="yo">
+<devices id="device">
+<device id="val" user="yo" user_agent="DO_NOT_MATCH_ANDROID 2 3 OPERA_TABLET">
   <group id="id2">
     <capability name="cap" value="23"/>
   </group>
+
+</device>
+<device id="generic" user_agent="" fall_back="root">
+    <group id="product_info">
+      <capability name="mobile_browser" value=""/>
+      <capability navalme="nokia_feature_pack" value="0"/>
+      <capability name="device_os" value=""/>
+      <capability name="nokia_series" value="0"/>
+      <capability name="has_qwerty_keyboard" value="false"/>
+      <capability name="pointing_method" value=""/>
+      <capability name="mobile_browser_version" value=""/>
+      <capability name="is_tablet" value="false"/>
+      <capability name="nokia_edition" value="0"/>
+      <capability name="uaprof" value=""/>
+      <capability name="can_skip_aligned_link_row" value="false"/>
+      <capability name="device_claims_web_support" value="false"/>
+      <capability name="ununiqueness_handler" value=""/>
+      <capability name="model_name" value=""/>
+      <capability name="device_os_version" value=""/>
+      <capability name="uaprof2" value=""/>
+      <capability name="is_wireless_device" value="true"/>
+      <capability name="uaprof3" value=""/>
+      <capability name="brand_name" value=""/>
+      <capability name="model_extra_info" value=""/>
+      <capability name="marketing_name" value=""/>
+      <capability name="can_assign_phone_number" value="true"/>
+      <capability name="release_date" value="2002_january"/>
+      <capability name="unique" value="true"/>
+    </group>
+    <group id="wml_ui">
+      <capability name="icons_on_menu_items_support" value="false"/>
+      <capability name="opwv_wml_extensions_support" value="false"/>
+      <capability name="built_in_back_button_support" value="false"/>
+      <capability name="proportional_font" value="false"/>
+      <capability name="insert_br_element_after_widget_recommended" value="false"/>
+      <capability name="wizards_recommended" value="false"/>
+      <capability name="wml_can_display_images_and_text_on_same_line" value="false"/>
+      <capability name="softkey_support" value="false"/>
+      <capability name="wml_make_phone_call_string" value="wtai://wp/mc;"/>
+      <capability name="deck_prefetch_support" value="false"/>
+      <capability name="menu_with_select_element_recommended" value="false"/>
+      <capability name="numbered_menus" value="false"/>
+      <capability name="card_title_support" value="true"/>
+      <capability name="image_as_link_support" value="false"/>
+      <capability name="wrap_mode_support" value="false"/>
+      <capability name="table_support" value="true"/>
+      <capability name="access_key_support" value="false"/>
+      <capability name="wml_displays_image_in_center" value="false"/>
+      <capability name="elective_forms_recommended" value="true"/>
+      <capability name="times_square_mode_support" value="false"/>
+      <capability name="break_list_of_links_with_br_element_recommended" value="true"/>
+      <capability name="menu_with_list_of_links_recommended" value="true"/>
+    </group>
+    <group id="chtml_ui">
+      <capability name="imode_region" value="none"/>
+      <capability name="chtml_can_display_images_and_text_on_same_line" value="false"/>
+      <capability name="chtml_displays_image_in_center" value="false"/>
+      <capability name="chtml_make_phone_call_string" value="tel:"/>
+      <capability name="chtml_table_support" value="false"/>
+      <capability name="chtml_display_accesskey" value="false"/>
+      <capability name="emoji" value="false"/>
+    </group>
 </device>
 </devices>
+
