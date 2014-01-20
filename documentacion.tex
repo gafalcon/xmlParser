@@ -1,0 +1,144 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+
+% This is a simple template for a LaTeX document using the "article" class.
+% See "book", "report", "letter" for other types of document.
+
+\documentclass[11pt]{article} % use larger type; default would be 10pt
+
+\usepackage[utf8]{inputenc} % set input encoding (not needed with XeLaTeX)
+\usepackage{listings}
+%%% Examples of Article customizations
+% These packages are optional, depending whether you want the features they provide.
+% See the LaTeX Companion or other references for full information.
+
+%%% PAGE DIMENSIONS
+\usepackage{geometry} % to change the page dimensions
+\geometry{a4paper} % or letterpaper (US) or a5paper or....
+% \geometry{margin=2in} % for example, change the margins to 2 inches all round
+% \geometry{landscape} % set up the page for landscape
+%   read geometry.pdf for detailed page layout information
+
+\usepackage{graphicx} % support the \includegraphics command and options
+\graphicspath{ {./screenshots/} }
+% \usepackage[parfill]{parskip} % Activate to begin paragraphs with an empty line rather than an indent
+
+%%% PACKAGES
+\usepackage{booktabs} % for much better looking tables
+\usepackage{array} % for better arrays (eg matrices) in maths
+\usepackage{paralist} % very flexible & customisable lists (eg. enumerate/itemize, etc.)
+\usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
+%\usepackage{subfig} % make it possible to include more than one captioned figure/table in a single float
+% These packages are all incorporated in the memoir class to one degree or another...
+
+%%% HEADERS & FOOTERS
+\usepackage{fancyhdr} % This should be set AFTER setting up the page geometry
+\pagestyle{fancy} % options: empty , plain , fancy
+\renewcommand{\headrulewidth}{0pt} % customise the layout...
+\lhead{}\chead{}\rhead{}
+\lfoot{}\cfoot{\thepage}\rfoot{}
+
+%%% SECTION TITLE APPEARANCE
+\usepackage{sectsty}
+\allsectionsfont{\sffamily\mdseries\upshape} % (See the fntguide.pdf for font help)
+% (This matches ConTeXt defaults)
+
+%%% ToC (table of contents) APPEARANCE
+\usepackage[nottoc,notlof,notlot]{tocbibind} % Put the bibliography in the ToC
+\usepackage[titles,subfigure]{tocloft} % Alter the style of the Table of Contents
+\renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
+\renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape} % No bold!
+
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\lstset{language=Haskell}
+%%% END Article customizations
+
+%%% The "real" document content comes below...
+
+\title{Proyecto Lenguaje de Programación: Parser XML en Haskell}
+
+\author{Gabriel Falcones Paredes}
+%\date{} % Activate to display a given date or no date (if empty),
+         % otherwise the current date is printed 
+
+\begin{document}
+\maketitle
+
+\section{Objetivos}
+
+\begin{itemize}
+	\item Implementar un Parser de archivos XML utilizando el Lenguaje de Programación Haskell.
+	\item Usando el parser XML desarrollado, utilizarlo para interpretar el archivo wurfl.xml proporcionado por el profesor.
+        \item Desarrollar metodos para realizar consultas en el archivo wurfl.xml
+\end {itemize}
+
+\section{Introducción}
+El siguiente proyecto consiste en la implementación de un parser para archivos tipo XML, desarrollado en el Lenguaje de Programación Haskell, y utilizarlo para interpretar el archivo wurlf.xml. Una vez conseguido interpretar este archivo, ser debera ser capaz de realizar consultas acerca de los contenidos de tal archivo.
+
+
+\section{Alcance del proyecto}
+\begin{itemize}
+	\item Lectura de archivos xml.
+	\item Desarrollo de Estructura de Datos para almacenar los contenidos de un archivo xml.
+	\item Parseo del archivo xml y almacenamiento de su contenido en la estructura de datos.
+        \item Implementación de funciones de consulta de los contenidos de la estructura de datos.
+\end{itemize}
+
+\subsection{Lectura de archivos xml.}
+\begin{itemize}
+	\item Se desarrollo la funcion readXML que recibe el nombre de un archivo xml y devuelve su contenido en un IO String.
+	\item El IO String a su vez es transformado a un String para almacenarlo en una estructura de datos.
+\end{itemize}
+
+\lstinputlisting[language=Haskell, firstline=13, lastline=17]{xmlParser.hs}
+
+\subsection{Desarrollo de la Estructura de datos}
+\begin{itemize}
+	\item Se creo una nueva estructura llamada XMLTree, la cual esta formada por un String que representa el nombre del tag, una lista de atributos, y una lista de nodos hijos que a su vez también son elementos tipo XMLTree.
+\end{itemize}
+
+\lstinputlisting[language=Haskell, firstline=8, lastline=10]{xmlParser.hs}
+
+\subsection{Parseo del archivo xml y almacenamiento de su contenido en la estructura de datos}
+\begin{itemize}
+	\item A partir del String creado a partir del archivo xml se crea una lista formada por cada una de las palabras del string.
+        \item Cada elemento de esta lista se analiza para comprobar si es un tag, atributo, etc; y de acuerdo a esto se va construyendo la estructura del XMLTree.
+\end{itemize}
+{\scriptsize
+\lstinputlisting[language=Haskell, firstline=81, lastline=94]{xmlParser.hs}
+}
+\subsection{Implementación de funciones de consulta}
+\begin{itemize}
+	\item Utilizando la estructura XMLTree creada, se implementaron funciones para consultar el contenido de la misma, de acuerdo a los requisitos pedidos por el profesor durante la sustentación.
+\end{itemize}
+
+\begin{lstlisting}[frame=single]
+buscarNumFallback :: [String] -> String -> [String] -> [String]
+buscarBuiltCamera :: [String] -> String -> [String] -> [String]
+buscarNumDevices :: [String] -> Integer
+buscarInId :: [String] -> [String] -> String
+\end{lstlisting}
+
+
+
+\section{Fuera del alcance del proyecto}
+\begin{itemize}
+	\item El proyecyo realizado fue diseñado exclusivamente para el archivo wurfl.xml proporcionado.
+        \item Un documento xml puede incluir contenido dentro de sus tags aparte de los tags hijos. Este caso no se implemetó debido a que en el archivo wurfl.xml no existian tags con contenido.
+        \item Además no se considera el caso de que exista espacios entre los nombres de los tags.
+\end{itemize}
+
+\section{Conclusiones}
+\begin{itemize}
+	\item Se logró concluir el proyecto, guardando correctamente el archivo xml en la estructura creada.
+	\item Para el desarrollo en Haskell fue necesario aprender el paradigma de los lenguajes funcionales, ya que es completamente diferente a los lenguajes imperativos, pero genera metodos de resolución más elegantes.
+	\item Fue necesario aprender a desarrollar la estructura con XML, aunque es relativamente sencillo.
+	\item Hubieron complicaciones durante la lectura de archivos en Haskell, ya que fue resulto un poco confuso la manera en que Haskell soluciona la lectura de archivos, ya que conlleva la utilizacion de metodos impuros.
+        \item Al momento de realizar las consultas y de mostrar el contenido del árbolXML, se utilizó un archivo xml de prueba para obtener resultados rápidos. Debido al metodo de evaluación de Haskell (lazy evaluation), el obtener los resultados de consultas para el archivo wurfl.xml tomaba una enorme cantidad de tiempo, ya que debía de leer un archivo muy pesado, guardarlo en la estructura, y luego leer la estructura. Debió de tomarse en cuenta los temas de eficiencia para desarrollar una solución más eficiente.
+\end{itemize}
+\end{document}
+
+
+

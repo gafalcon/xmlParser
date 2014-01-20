@@ -85,8 +85,11 @@ crearXMLTreeAux tree (x:xs)
   | isAttr x = crearXMLTreeAux (addAttr tree x) xs
   | isCloseTagName x = (tree,xs) 
   | isTagName x = case tree of Empty -> crearXMLTreeAux (newXMLTree (crearTagName x)) xs
-                               _ -> let newChildTuple = crearXMLTreeAux (newXMLTree (crearTagName x)) xs
-                                    in let newTree = XMLTree (tag tree) (attr tree) (childs tree ++ [fst newChildTuple])
+                               _ -> let newChildTuple =
+                                          crearXMLTreeAux (newXMLTree (crearTagName x)) xs
+                                    in let newTree =
+                                             XMLTree (tag tree) (attr tree) (childs tree ++
+                                                                             [fst newChildTuple])
                                        in crearXMLTreeAux newTree (snd newChildTuple)
   | otherwise = crearXMLTreeAux tree (unirAttr (x:xs))
 
