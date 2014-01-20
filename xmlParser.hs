@@ -179,6 +179,7 @@ buscarBuiltCamera (x1:x2:xs) id lista
   | otherwise = buscarBuiltCamera (x2:xs) id lista
     
 
+
 -- Dada una listaXML retorna el num de Devices que contiene
 buscarNumDevices :: [String] -> Integer
 buscarNumDevices lista = let aux (x:xs) n
@@ -187,7 +188,7 @@ buscarNumDevices lista = let aux (x:xs) n
                          in aux lista 0
 
 -- Devuelve lista de ids de Devices que contengan el substring str contenidos en una lista
-buscarInId :: [String] -> [String] -> String
+buscarInId :: [String] -> [String] -> String -> [String]
 buscarInId [] lista _ = lista
 buscarInId (x1:x2:[]) lista str = lista
 buscarInId (x1:x2:xs) lista str
